@@ -1,23 +1,16 @@
 package main
 
 import (
-	"bytes"
-	"encoding/binary"
 	"fmt"
+	// "os"
+	// "path/filex/path"
 )
 
 func main() {
-	buf := new(bytes.Buffer)
-	byteOrder := binary.LittleEndian
-
-	binary.Write(buf, byteOrder, uint32(92301))
-	fmt.Printf("uint32: %x\n", buf.Bytes())
-
-	// buf.Reset()
-	binary.Write(buf, byteOrder, uint16(65535))
-	fmt.Printf("uint16: %x\n", buf.Bytes())
-
-	// buf.Reset()
-	binary.Write(buf, byteOrder, float32(0.0012))
-	fmt.Printf("float: %x\n", buf.Bytes())
+	root := `/Users/yangchengzhi/yangchengzhi/test/zip/`
+	path1 := `/Users/yangchengzhi/yangchengzhi/test/zip/1.txt`
+	path2 := `/Users/yangchengzhi/yangchengzhi/test/zip/test/1.txt`
+	content1 := path1[len(root):]
+	content2 := path2[len(root):]
+	fmt.Printf("%v\n%v\n", content1, content2)
 }

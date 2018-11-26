@@ -31,42 +31,8 @@ class Util_Encrypt
         $header .= $this->packInt64P($appId);
         // rsa加密aes的key和iv
         $header .= $this->rsaEncryptAes();
+        // $this->ps(bin2hex($this->rsaEncryptAes()));
         return $header;
-    }
-
-    public function BinToStr($str)
-    {
-        $arr = explode(' ', $str);
-        foreach ($arr as &$v) {
-            // 他做了什么？？
-            $v = pack("H" . strlen(base_convert($v, 2, 16)), base_convert($v, 2, 16));
-        }
-
-        return join('', $arr);
-    }
-    public function StrToBin($str)
-    {
-        //1.列出每个字符
-        // 这边的分割正则也不理解
-        // (?<!^) 后瞻消极断言
-        // (?!$) 前瞻消极断言
-        // 看意思好像说的是：不以^开头（但是这边 ^ 又没有被转义...），不以 $ 结尾（同上）
-        // 然后得到的记过就是字符串一个个被分割成了数组（郁闷）
-        // 求解释
-        $arr = preg_split('/(?<!^)(?!$)/u', $str);
-        //2.unpack字符
-        foreach ($arr as &$v) {
-            /**
-             * unpack：将二进制字符串解包(英语原文：Unpack data from binary string)
-             * H: 英语描述原文：Hex string, high nibble first
-             * 这段代码做了什么？？
-             */
-            $temp = unpack('H*', $v); // 这边被解析出来的字符串为什么是 16进制的？？
-            $v = base_convert($temp[1], 16, 2);
-            unset($temp);
-        }
-
-        return join(' ', $arr);
     }
 
     /**
@@ -81,10 +47,6 @@ class Util_Encrypt
         // 根据已有数据hash生成aes的key和iv,hash返回16字节二进制
         $this->_aesKey = md5($version_code . $fileNum, true);
         $this->_aesIv = md5($appId, true);
-
-        echo sprintf("AES Key or IV is invalid. Key: %s, IV: %s.", bin2hex($this->_aesKey), bin2hex($this->_aesIv));
-        die();
-        return true;
     }
     /**
      * Rsa加密Aes的key&iv
@@ -98,6 +60,7 @@ class Util_Encrypt
             throw new Exception("private key is invalid");
         }
         $aesData = $this->_aesKey . $this->_aesIv;
+        // $this->ps(bin2hex($aesData));
         if (strlen($aesData) != 32) {
             throw new Exception("AES Data is invalid");
         }
@@ -134,7 +97,12 @@ class Util_Encrypt
             throw new Exception(sprintf("AES Key or IV is invalid. Key: %s, IV: %s.", bin2hex($this->_aesKey), bin2hex($this->_aesIv)));
         }
 
+        // echo sprintf("AES Key or IV is invalid. Key: %s, IV: %s.", bin2hex($this->_aesKey), bin2hex($this->_aesIv));
+        // $this->ps(bin2hex($indexData));
+
         $aesRet = openssl_encrypt($indexData, $cipher, $this->_aesKey, true, $this->_aesIv);
+        // $this->p(strlen($aesRet));
+        // $this->ps(bin2hex($aesRet));
         $ret['size'] = strlen($aesRet);
         $ret['data'] = $aesRet;
         unset($indexData, $aesRet);
@@ -160,9 +128,11 @@ class Util_Encrypt
             $deflateData .= $val['content'];
             $startOffset = $startOffset + $itemLength;
         }
+
         $ret['size'] = strlen($deflateData);
         $ret['data'] = gzencode($deflateData, 9);
         $ret['indexData'] = $indexData;
+        // $this->ps(bin2hex($ret['data']));
         unset($startOffset, $deflateData, $indexData);
         return $ret;
     }
@@ -267,7 +237,7 @@ class Util_Encrypt
     }
 }
 
-$fileDir = "./zip";
+$fileDir = "/Users/yangchengzhi/yangchengzhi/test/zip";
 $version_code = 1;
 $appId = 123;
 $saveFilePath = "./smapp/test.smapp";
