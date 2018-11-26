@@ -55,21 +55,20 @@ type FileInfo struct {
 	PathLength uint32 //int
 	Path       string
 }
-type Files []FileInfo
 
 type SmappFile struct {
-	MagicNumber uint32 // magic num
-	Appid       uint64 // appid
-	VersionCode uint32 // version code
-	Size        uint32 // all file size
-	FileNum     uint32 // all file num
-	Data        []byte // all really data
-	Files       Files  // all files
-	IndexData   []byte // the second index data
-	IndexLength uint32 // the index length
-	AESKey      []byte // aes key
-	AESIV       []byte // aes iv
-	Header      []byte // header
+	MagicNumber uint32     // magic num
+	Appid       uint64     // appid
+	VersionCode uint32     // version code
+	Size        uint32     // all file size
+	FileNum     uint32     // all file num
+	Data        []byte     // all really data
+	Files       []FileInfo // all files
+	IndexData   []byte     // the second index data
+	IndexLength uint32     // the index length
+	AESKey      []byte     // aes key
+	AESIV       []byte     // aes iv
+	Header      []byte     // header
 }
 
 func gzipEncode(in []byte) ([]byte, error) {
