@@ -1,4 +1,4 @@
-package main
+package library
 
 import (
 	"fmt"
@@ -6,25 +6,37 @@ import (
 	"github.com/baidubce/bce-sdk-go/services/bos"
 )
 
-func main() {
-	// 用户的Access Key ID和Secret Access Key
-	AK, SK := "3a9861ff96dd472f875791b14cb0b6a1", "b3bc7ead16ef4780b928d013ca9ce2b7"
-
+const (
+	// 用户的Access Key ID
+	AK = "3a9861ff96dd472f875791b14cb0b6a1"
+	// 用户的Secret Access Key
+	SK = "b3bc7ead16ef4780b928d013ca9ce2b7"
 	// 用户指定的Endpoint
-	ENDPOINT := "bj.bcebos.com"
-	BUCKETNAME := "searchbox"
-	CDN := "b.bdstatic.com"
+	ENDPOINT = "bj.bcebos.com"
+	BUCKETNAME = "searchbox"
+	CDN = "b.bdstatic.com"
+)
 
+func NewBos() (*bos.Client , error){
 	// 初始化一个BosClient
 	bosClient, err := bos.NewClient(AK, SK, ENDPOINT)
 
 	if err != nil {
-		fmt.Printf("%+v", err)
-		return
+		return nil, err
 	}
+	return bosClient, nil
+}
 
-	fileName := "./group.go"
-	objectName := "2.smapp"
+func packageUploadRes(){
+
+}
+
+func UploadFile(filePath string, args...){
+	return packageUploadRes()
+}
+
+	// fileName := "./group.go"
+	// objectName := "2.smapp"
 	etag, err := bosClient.PutObjectFromFile(BUCKETNAME, objectName, fileName, nil)
 	fmt.Printf("%+v", etag)
 
@@ -39,4 +51,4 @@ func main() {
 	fmt.Printf("%+v\n", urlCDN)
 	return
 
-}
+

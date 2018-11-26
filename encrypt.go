@@ -31,45 +31,46 @@ z2jjGE0=
 -----END RSA PRIVATE KEY-----
 `)
 
-// type Header struct {
-// 	MagicNumber uint32
-// 	VersionCode uint32
-// 	FileNum     uint32
-// 	IndexLength uint32
-// 	DataLength  uint32
-// 	Appid       uint64
-// 	Cipher      []byte //48 Bytes
-// 	AESKey      []byte
-// 	AESIV       []byte
-// }
-// type Index []FileInfo
-// type Data []byte
-// type smappFile struct {
-// 	header Header
-// 	index  Index
-// 	data   Data
-// }
+type Header struct {
+	MagicNumber uint32
+	VersionCode uint32
+	FileNum     uint32
+	IndexLength uint32
+	DataLength  uint32
+	Appid       uint64
+	Cipher      []byte //48 Bytes
+	AESKey      []byte
+	AESIV       []byte
+}
+
 type FileInfo struct {
 	Offset     uint32 //int64
 	Size       uint32 //int64
 	PathLength uint32 //int
 	Path       string
 }
-
+type Index []FileInfo
+type Data []byte
 type SmappFile struct {
-	MagicNumber uint32     // magic num
-	Appid       uint64     // appid
-	VersionCode uint32     // version code
-	Size        uint32     // all file size
-	FileNum     uint32     // all file num
-	Data        []byte     // all really data
-	Files       []FileInfo // all files
-	IndexData   []byte     // the second index data
-	IndexLength uint32     // the index length
-	AESKey      []byte     // aes key
-	AESIV       []byte     // aes iv
-	Header      []byte     // header
+	header Header
+	index  Index
+	data   Data
 }
+
+// type SmappFile struct {
+// 	MagicNumber uint32     // magic num
+// 	Appid       uint64     // appid
+// 	VersionCode uint32     // version code
+// 	Size        uint32     // all file size
+// 	FileNum     uint32     // all file num
+// 	Data        []byte     // all really data
+// 	Files       []FileInfo // all files
+// 	IndexData   []byte     // the second index data
+// 	IndexLength uint32     // the index length
+// 	AESKey      []byte     // aes key
+// 	AESIV       []byte     // aes iv
+// 	Header      []byte     // header
+// }
 
 func gzipEncode(in []byte) ([]byte, error) {
 	var (
@@ -92,7 +93,7 @@ func gzipEncode(in []byte) ([]byte, error) {
 	return buffer.Bytes(), nil
 }
 
-func getFileInfo(path string, root string, pSmappFile *SmappFile) error {
+func getFileData(path string, root string, pSmappFile *SmappFile) ([]byte, error) {
 	offset := uint32(0)
 	fileNum := uint32(0)
 	var buffer bytes.Buffer
@@ -107,7 +108,7 @@ func getFileInfo(path string, root string, pSmappFile *SmappFile) error {
 		if err != nil {
 			return err
 		}
-		pSmappFile.Files = append(pSmappFile.Files, FileInfo{
+		pSmappFile.index = append(pSmappFile.index, FileInfo{
 			Offset:     offset,
 			Size:       uint32(f.Size()),
 			PathLength: uint32((strings.Count(path[len(root):], "") - 1)),
@@ -120,17 +121,16 @@ func getFileInfo(path string, root string, pSmappFile *SmappFile) error {
 	})
 
 	if err != nil {
-		return err
+		return nil, err
 	}
-	pSmappFile.Size = offset
-	pSmappFile.Data, err = gzipEncode(buffer.Bytes())
+	pSmappFile.header.DataLength = offset
+	pSmappFile.header.FileNum = fileNum
+	pSmappFile.data, err = gzipEncode(buffer.Bytes())
 	// fmt.Printf("gzip data:\n%+v\n", hex.EncodeToString(pSmappFile.Data))
-
-	pSmappFile.FileNum = fileNum
 	if err != nil {
-		return errors.New("gzip encode error:" + err.Error())
+		return nil, errors.New("gzip encode error:" + err.Error())
 	}
-	return nil
+	return pSmappFile.data, nil
 }
 
 func PKCS7Padding(ciphertext []byte, blockSize int) []byte {
@@ -156,22 +156,22 @@ func aesEncrypt(origData, key []byte, iv []byte) ([]byte, error) {
 }
 
 func createAesKeyIv(pSmappFile *SmappFile) error {
-	key := md5.Sum([]byte(fmt.Sprint(pSmappFile.VersionCode) + fmt.Sprint(pSmappFile.FileNum)))
-	pSmappFile.AESKey = key[:]
-	iv := md5.Sum([]byte(fmt.Sprint(pSmappFile.Appid)))
-	pSmappFile.AESIV = iv[:]
-	fmt.Printf("aes key:\n%+v\n", hex.EncodeToString(pSmappFile.AESKey))
-	fmt.Printf("aes iv:\n%+v\n", hex.EncodeToString(pSmappFile.AESIV))
+	key := md5.Sum([]byte(fmt.Sprint(pSmappFile.header.VersionCode) + fmt.Sprint(pSmappFile.header.FileNum)))
+	pSmappFile.header.AESKey = key[:]
+	iv := md5.Sum([]byte(fmt.Sprint(pSmappFile.header.Appid)))
+	pSmappFile.header.AESIV = iv[:]
+	fmt.Printf("aes key:\n%+v\n", hex.EncodeToString(pSmappFile.header.AESKey))
+	fmt.Printf("aes iv:\n%+v\n", hex.EncodeToString(pSmappFile.header.AESIV))
 	return nil
 }
 
-func getIndex(pSmappFile *SmappFile) error {
+func getIndex(pSmappFile *SmappFile) ([]byte, error) {
 	// cipher := "AES-128-CBC"
 	buf := new(bytes.Buffer)
 	byteOrder := binary.LittleEndian
 
 	// 采用小端模式
-	for _, f := range pSmappFile.Files {
+	for _, f := range pSmappFile.index {
 		binary.Write(buf, byteOrder, f.Offset)
 		binary.Write(buf, byteOrder, f.Size)
 		binary.Write(buf, byteOrder, f.PathLength)
@@ -182,15 +182,14 @@ func getIndex(pSmappFile *SmappFile) error {
 	createAesKeyIv(pSmappFile)
 
 	// 通过AES算法CBC模式加密
-	aesEncryptData, err := aesEncrypt(buf.Bytes(), pSmappFile.AESKey, pSmappFile.AESIV)
+	aesEncryptData, err := aesEncrypt(buf.Bytes(), pSmappFile.header.AESKey, pSmappFile.header.AESIV)
 	if err != nil {
-		return errors.New("AesEncrypt error:" + err.Error())
+		return nil, errors.New("AesEncrypt error:" + err.Error())
 	}
 	fmt.Printf("aesEncryptData:\n%+v\n", hex.EncodeToString(aesEncryptData))
+	pSmappFile.header.IndexLength = uint32(len(aesEncryptData))
 
-	pSmappFile.IndexData = aesEncryptData
-	pSmappFile.IndexLength = uint32(len(aesEncryptData))
-	return nil
+	return aesEncryptData, nil
 }
 
 func privateEncrypt(priv *rsa.PrivateKey, data []byte) (enc []byte, err error) {
@@ -273,34 +272,33 @@ func rsaEncrypt(origData []byte) ([]byte, error) {
 
 }
 
-func getHeader(pSmappFile *SmappFile) error {
+func getHeader(pSmappFile *SmappFile) ([]byte, error) {
 	buf := new(bytes.Buffer)
 	byteOrder := binary.LittleEndian
 
 	// 采用小端模式
-	binary.Write(buf, byteOrder, pSmappFile.MagicNumber)
-	binary.Write(buf, byteOrder, pSmappFile.VersionCode)
-	binary.Write(buf, byteOrder, pSmappFile.FileNum)
-	binary.Write(buf, byteOrder, pSmappFile.IndexLength)
-	binary.Write(buf, byteOrder, pSmappFile.Size)
-	binary.Write(buf, byteOrder, pSmappFile.Appid)
+	binary.Write(buf, byteOrder, pSmappFile.header.MagicNumber)
+	binary.Write(buf, byteOrder, pSmappFile.header.VersionCode)
+	binary.Write(buf, byteOrder, pSmappFile.header.FileNum)
+	binary.Write(buf, byteOrder, pSmappFile.header.IndexLength)
+	binary.Write(buf, byteOrder, pSmappFile.header.DataLength)
+	binary.Write(buf, byteOrder, pSmappFile.header.Appid)
 
 	// rsa 加密 key iv
 	aesKeyIv := new(bytes.Buffer)
-	aesKeyIv.Write(pSmappFile.AESKey)
-	aesKeyIv.Write(pSmappFile.AESIV)
+	aesKeyIv.Write(pSmappFile.header.AESKey)
+	aesKeyIv.Write(pSmappFile.header.AESIV)
 	fmt.Printf("aesKeyIv:\n%+v\n", hex.EncodeToString(aesKeyIv.Bytes()))
 
 	rsaKeyIv, err := rsaEncrypt(aesKeyIv.Bytes())
 	if err != nil {
-		return errors.New("rsa Kye Iv error :\n" + err.Error())
+		return nil, errors.New("rsa Kye Iv error :\n" + err.Error())
 	}
 	fmt.Printf("Rsa aesKeyIv:\n%+v\n", hex.EncodeToString(rsaKeyIv))
 	binary.Write(buf, byteOrder, rsaKeyIv)
 
-	pSmappFile.Header = buf.Bytes()
 	// fmt.Printf("Header:\n%+v\n", hex.EncodeToString(pSmappFile.Header))
-	return nil
+	return buf.Bytes(), nil
 }
 
 func createSmapp(data []byte, fileName string) error {
@@ -315,7 +313,7 @@ func createSmapp(data []byte, fileName string) error {
 	return nil
 }
 
-func encrypt(versionCode int, appId int64, input string, output string) error {
+func Encrypt(versionCode int, appId int64, input string, output string) error {
 	if versionCode <= 0 {
 		return errors.New("versionCode is invalid")
 	}
@@ -325,33 +323,36 @@ func encrypt(versionCode int, appId int64, input string, output string) error {
 
 	// 0.初始化变量
 	pSmappFile := &SmappFile{
-		MagicNumber: 3172468484, //0xBD180704
-		VersionCode: uint32(versionCode),
-		Appid:       uint64(appId),
+		header: Header{
+			MagicNumber: 3172468484, //0xBD180704
+			VersionCode: uint32(versionCode),
+			Appid:       uint64(appId),
+		},
 	}
+
 	// 1.获取所有的文件的压缩后二进制内容 & 内容大小 & 路径 & 路径大小 (加密文件第三段内容)
-	err := getFileInfo(input, input, pSmappFile)
+	data, err := getFileData(input, input, pSmappFile)
 	if err != nil {
 		return errors.New("getFileInfo error:" + err.Error())
 	}
 
 	// 2.获取文件的 Index (加密文件的第二段)
-	err = getIndex(pSmappFile)
+	index, err := getIndex(pSmappFile)
 	if err != nil {
 		return errors.New("getIndex error" + err.Error())
 	}
 
 	// 3.获取文件的Header (加密文件的第一段)
-	err = getHeader(pSmappFile)
+	header, err := getHeader(pSmappFile)
 	if err != nil {
 		return errors.New(" getHeader error " + err.Error())
 	}
 
 	// 4.合并第一段第二段第三段并生成 smapp文件
 	buf := new(bytes.Buffer)
-	buf.Write(pSmappFile.Header)
-	buf.Write(pSmappFile.IndexData)
-	buf.Write(pSmappFile.Data)
+	buf.Write(header)
+	buf.Write(index)
+	buf.Write(data)
 	createSmapp(buf.Bytes(), output)
 
 	return nil
@@ -363,7 +364,7 @@ func main() {
 	input := "/Users/yangchengzhi/yangchengzhi/test/zip"
 	output := "./smapp/test.smapp"
 
-	err := encrypt(versionCode, appId, input, output)
+	err := Encrypt(versionCode, appId, input, output)
 	if err != nil {
 		panic(err)
 	}
