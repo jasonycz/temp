@@ -1,0 +1,1 @@
+window.define("tabs/picture/index",function(e,n,i,t,o,d,c,u,s,a,r,p,w,x,b,f){"use strict";Page({onLoad:function(){this.selectComponent("#picture").handleLoad({})}})}),window.__swanRoute="tabs/picture/index",window.usingComponents=["component/decoration_picture/index"],require("tabs/picture/index");

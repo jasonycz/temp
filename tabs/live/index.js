@@ -1,0 +1,1 @@
+window.define("tabs/live/index",function(e,n,i,t,o,s,a,d,w,l,u,r,v,c,g,p){"use strict";Page({onShow:function(){this.selectComponent("#livePage").renderStartButton()}})}),window.__swanRoute="tabs/live/index",window.usingComponents=["component/live/live_page"],require("tabs/live/index");

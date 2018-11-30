@@ -42,7 +42,6 @@ type Header struct {
 	AESKey      []byte
 	AESIV       []byte
 }
-
 type FileInfo struct {
 	Offset     uint32 //int64
 	Size       uint32 //int64
@@ -51,26 +50,12 @@ type FileInfo struct {
 }
 type Index []FileInfo
 type Data []byte
+
 type SmappFile struct {
 	header Header
 	index  Index
 	data   Data
 }
-
-// type SmappFile struct {
-// 	MagicNumber uint32     // magic num
-// 	Appid       uint64     // appid
-// 	VersionCode uint32     // version code
-// 	Size        uint32     // all file size
-// 	FileNum     uint32     // all file num
-// 	Data        []byte     // all really data
-// 	Files       []FileInfo // all files
-// 	IndexData   []byte     // the second index data
-// 	IndexLength uint32     // the index length
-// 	AESKey      []byte     // aes key
-// 	AESIV       []byte     // aes iv
-// 	Header      []byte     // header
-// }
 
 func gzipEncode(in []byte) ([]byte, error) {
 	var (

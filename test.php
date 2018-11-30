@@ -24,7 +24,7 @@ function _calculateScore($strVersionCode)
     }
     return $intScore;
 }
-$version = "12.0.0.0";
+$version = "11.2.0.0";
 $score = _calculateScore($version);
 
 $sql = "insert into host_version(version_code,score)values('" . $version . "'," . $score . ");";

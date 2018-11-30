@@ -1,0 +1,1 @@
+window.define("pages/pingjia/storeevaluatelist/index",function(e,i,n,a,t,s,o,d,u,g,p,w,l,r,c,f){"use strict";Page({data:{},onLoad:function(){}})}),window.__swanRoute="pages/pingjia/storeevaluatelist/index",window.usingComponents=[],require("pages/pingjia/storeevaluatelist/index");

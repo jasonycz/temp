@@ -1,0 +1,1 @@
+window.define("pages/zhaomu/register",function(e,o,n,i,r,s,a,t,u,g,d,f,w,c,m,p){"use strict";Page({onLoad:function(){r.redirectTo({url:"/pages/fenxiao/center/index?from=off"})}})}),window.__swanRoute="pages/zhaomu/register",window.usingComponents=[],require("pages/zhaomu/register");

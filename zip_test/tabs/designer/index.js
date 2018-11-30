@@ -1,0 +1,1 @@
+window.define("tabs/designer/index",function(e,n,d,i,o,s,t,a,r,c,g,u,w,b,f,m){"use strict";Page({onLoad:function(e){this.selectComponent("#designer").handleLoad(Object.assign({},e,{from:"dataSource",dsId:"",dataType:1}))}})}),window.__swanRoute="tabs/designer/index",window.usingComponents=["component/decoration_designer/index"],require("tabs/designer/index");

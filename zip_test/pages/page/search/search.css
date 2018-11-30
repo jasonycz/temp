@@ -1,0 +1,1 @@
+.tab{background-color:#f8f8f8;font-size:3.7333333333333334vw}.tab,.tab-label{display:flex;align-items:center;justify-content:center}.tab-label{height:10.666666666666666vw;line-height:10.666666666666666vw;flex:1;border-bottom:.13333333333333333vw solid #e5e5e5}.tab-label--active{border-bottom:1px solid red}

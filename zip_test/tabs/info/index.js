@@ -1,0 +1,1 @@
+window.define("tabs/info/index",function(n,o,i,t,s,e,a,d,f,w,u,b,c,p,r,g){"use strict";Page({data:{options:{}},onLoad:function(n){this.setData({options:Object.assign({},n,{from:"tabs",dsId:"",dataType:1})})}})}),window.__swanRoute="tabs/info/index",window.usingComponents=["component/newsinfo/newsinfo"],require("tabs/info/index");
