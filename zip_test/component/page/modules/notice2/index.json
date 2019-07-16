@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "wxc-notice": "/dist/minui/wxc-notice/dist/index"
-  }
-}

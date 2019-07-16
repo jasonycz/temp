@@ -1,1 +1,0 @@
-window.define("pages/aboutmine/aboutmine",function(e,n,a,i,o,t,u,s,b,m,w,d,g,p,r,f){"use strict";Page({onLoad:function(e){if(e){var n=JSON.parse(e.aboutmine);this.setData({about:n})}}})}),window.__swanRoute="pages/aboutmine/aboutmine",window.usingComponents=[],require("pages/aboutmine/aboutmine");

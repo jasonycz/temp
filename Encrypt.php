@@ -169,7 +169,8 @@ class Util_Encrypt
         // 包结构-第三段
         // 获取每个文件内容大小 offset 文件路径 文件路径的大小 gzip 压缩所有文件内容
         $thirdContent = $this->_structureDeflateData($files);
-        // $this->ps($thirdContent);
+
+        $this->ps($thirdContent);
 
         // 包结构-第二段
         // 生成 Key IV indexData 进行大小端处理 进行 CBC 模式AES加密

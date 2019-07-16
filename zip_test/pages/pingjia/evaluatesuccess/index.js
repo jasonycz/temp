@@ -1,1 +1,0 @@
-window.define("pages/pingjia/evaluatesuccess/index",function(e,n,a,i,s,t,u,o,c,d,g,w,p,l,v,f){"use strict";Page({data:{},onLoad:function(e){this.setData({evaluateCount:e.evaluateCount})},onShow:function(){}})}),window.__swanRoute="pages/pingjia/evaluatesuccess/index",window.usingComponents=[],require("pages/pingjia/evaluatesuccess/index");

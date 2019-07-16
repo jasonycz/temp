@@ -97,12 +97,25 @@ func getAESKeyIV(f *os.File) ([]byte, []byte) {
 		panic(err)
 	}
 	pk := pki.(*rsa.PublicKey)
+	fmt.Printf("buf: %v\n", buf)
 	crypted := new(big.Int).SetBytes(buf)
+
 	decrypted := crypted.Exp(crypted, big.NewInt(int64(pk.E)), pk.N)
 	plaintext := decrypted.Bytes()
 
 	key := plaintext[15:31]
 	iv := plaintext[31:47]
+
+	fmt.Printf("plaintext: %v\n", plaintext)
+	fmt.Printf("plaintext[15:47]: %v\n", plaintext[15:47])
+
+	aesKeyIv := new(bytes.Buffer)
+	aesKeyIv.Write(key)
+	aesKeyIv.Write(iv)
+
+	fmt.Printf("keyIv: %v\n", aesKeyIv.Bytes())
+	panic("v")
+
 	return key, iv
 }
 
@@ -181,6 +194,7 @@ func (f *smappFile) UnpackStage2() {
 	indexDataReader := bytes.NewReader(indexData)
 
 	fileCount := 0
+
 	for indexDataReader.Len() > 12 {
 		offset, err := getUInt32(indexDataReader, nil)
 		if err != nil {
@@ -194,6 +208,11 @@ func (f *smappFile) UnpackStage2() {
 		if err != nil {
 			panic(err)
 		}
+		fmt.Printf("\n------------- %v:%v -------------\n", "offset", offset)
+		fmt.Printf("\n------------- %v:%v -------------\n", "size", size)
+		fmt.Printf("\n------------- %v:%v -------------\n", "pathlen", pathlen)
+		fmt.Printf("\n------------- %v:%v -------------\n", "indexDataReader.Len()", indexDataReader.Len())
+
 		if indexDataReader.Len() < int(pathlen) {
 			break
 		}
@@ -220,7 +239,7 @@ func (f *smappFile) UnpackStage3() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("fileContentHeader: %s\n", hex.EncodeToString(fileContents[:16]))
+	//fmt.Printf("fileContentHeader: %s\n", hex.EncodeToString(fileContents[:16]))
 	fcReader, err := gzip.NewReader(bytes.NewReader(fileContents))
 	if err != nil {
 		panic(err)
@@ -254,6 +273,7 @@ func main() {
 		panic(err)
 	}
 	sf.UnpackStage1()
+	// return
 	sf.UnpackStage2()
 	sf.UnpackStage3()
 }
