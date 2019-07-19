@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"math/rand"
@@ -192,7 +193,9 @@ func pool(w http.ResponseWriter, r *http.Request) {
 
 	// fmt.Printf("%+v", db)
 	db.First(&user, 1) // 找到id为1的产品
-	fmt.Printf("%+v", user)
+	// fmt.Printf("%+v", user)
+	text, _ := json.Marshal(user)
+	w.Write(text)
 
 }
 
