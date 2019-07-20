@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"strings"
+	"sync"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -26,14 +27,13 @@ type User struct {
 }
 
 const (
-	defaultDSNFormat = "%s:%s@%s(%s:%d)/%s?%s"
-	defaultAnd       = "&"
-	defaultFormat    = "%s%s=%s" + defaultAnd
-	defaultDrive     = "mysql"
+	defaultAnd    = "&"
+	defaultFormat = "%s%s=%s" + defaultAnd
+	defaultDrive  = "mysql"
 )
 
-// Conf db configuration
-type Conf struct {
+// DBConf db configuration
+type DBConf struct {
 	Username        string
 	Password        string
 	Protocol        string
@@ -51,10 +51,9 @@ type Conf struct {
 type Parameters map[string]interface{}
 
 // Open provides method to opening a database link with DBConfig struct
-func (c *Conf) Open(ping bool) (*gorm.DB, error) {
+func (c *DBConf) Open(ping bool) (*gorm.DB, error) {
 	db, err := gorm.Open(c.Driver, c.EncodeDSN())
-	// defer db.Close()
-	if nil != err {
+	if err != nil {
 		return db, err
 	}
 
@@ -74,14 +73,11 @@ func (c *Conf) Open(ping bool) (*gorm.DB, error) {
 	return db, err
 }
 
-// EncodeDSN encode Conf sturct to string
-func (c *Conf) EncodeDSN() string {
-	port := c.Port
-	ip := c.IP
-
+// EncodeDSN encode DBConf sturct to string
+func (c *DBConf) EncodeDSN() string {
 	return strings.TrimRight(fmt.Sprintf(
-		defaultDSNFormat, c.Username, c.Password,
-		c.Protocol, ip, port, c.DefaultDB,
+		"%s:%s@%s(%s:%d)/%s?%s", c.Username, c.Password,
+		c.Protocol, c.IP, c.Port, c.DefaultDB,
 		encodeParamseters(c.Parameters)), "?",
 	)
 }
@@ -104,33 +100,22 @@ var (
 	db           *gorm.DB
 )
 
-// DBPool db pool
-type DBPool struct {
-	Topic string `json:"cluster"`
-	// 使用sync Map
-	SercvicePool map[string]*Service
-}
-
-// Service db service
-type Service struct {
-	IP   string `json:"ip"`
-	Port int    `json:"port"`
-	DB   *gorm.DB
+// Pool db pool
+type Pool struct {
+	sync.Map
 }
 
 var (
-	dbPool  DBPool
-	keyList []string
+	connInfo map[string]*Pool
+	pool     Pool
+	keyList  []string
+	cluster  = "eshop"
 )
 
-// pool 的 key为 conf 的 md5
+// pool 的 key为 DBConf 的 md5
 func init() {
-	dbPool = DBPool{
-		Topic:        "eshop",
-		SercvicePool: map[string]*Service{},
-	}
-
-	confList := []Conf{
+	connInfo = map[string]*Pool{}
+	confList := []DBConf{
 		{
 			Username:        "root",
 			Password:        "root",
@@ -160,70 +145,92 @@ func init() {
 	for _, dbConf := range confList {
 		db, err := dbConf.Open(true)
 		if err != nil {
+			// continue
 			panic(err)
 		}
 		key := fmt.Sprintf("%s_%d", dbConf.IP, dbConf.Port)
 		keyList = append(keyList, key)
-		dbPool.SercvicePool[key] = &Service{
-			IP:   dbConf.IP,
-			Port: dbConf.Port,
-			DB:   db,
-		}
+		pool.Store(key, db)
 	}
 
-	// gormDB, err := gorm.Open("mysql", "root:root@/eshop?charset=utf8&parseTime=True&loc=Local")
-	// if err != nil {
-	// 	panic("failed to connect database")
-	// }
-	// fmt.Printf("%+v", gormDB)
-	// gormDB.DB().Ping()
-
-	// db = gormDB
-	// defer gormDB.Close()
-
-	// db.DB().SetMaxOpenConns(10) // 最大连接数为 10
-	// db.DB().SetMaxIdleConns(5)  // 最大空闲连接数 5
-	// db.DB().SetConnMaxLifetime(1 * time.Minute)
+	connInfo[cluster] = &pool
 }
 
-func pool(w http.ResponseWriter, r *http.Request) {
+func poolTest(w http.ResponseWriter, r *http.Request) {
 	var user User
+	var db *gorm.DB
 
-	db := dbPool.SercvicePool[keyList[randSigleton.Intn(len(keyList))]].DB
+	value, hi := connInfo[cluster].Load("127.0.0.1_3306")
+	fmt.Printf("%v============hi %v", value, hi)
 
-	// fmt.Printf("%+v", db)
-	db.First(&user, 1) // 找到id为1的产品
-	// fmt.Printf("%+v", user)
+	confList := []DBConf{
+		{
+			Username:        "root",
+			Password:        "root",
+			Protocol:        "tcp",
+			DefaultDB:       "eshop",
+			Port:            3306,
+			IP:              "127.0.0.1",
+			Driver:          "mysql",
+			ConnMaxLifeTime: 120,
+			MaxIdleConns:    12,
+			MaxOpenConns:    10,
+		},
+		{
+			Username:        "root",
+			Password:        "root",
+			Protocol:        "tcp",
+			DefaultDB:       "eshop",
+			Port:            3307,
+			IP:              "127.0.0.1",
+			Driver:          "mysql",
+			ConnMaxLifeTime: 120,
+			MaxIdleConns:    12,
+			MaxOpenConns:    10,
+		},
+	}
+	keyListTmp := []string{}
+	for _, dbConf := range confList {
+		db, err := dbConf.Open(true)
+		key := fmt.Sprintf("%s_%d", dbConf.IP, dbConf.Port)
+		if err != nil {
+			connInfo[cluster].Delete(key)
+			continue
+		}
+		keyListTmp = append(keyListTmp, key)
+		actual, loaded := connInfo[cluster].LoadOrStore(key, db)
+		// loaded == true then need to close db
+		if loaded {
+			db.Close()
+		}
+		fmt.Printf("actual is %v, loaded is %t", actual, loaded)
+	}
+	keyList = keyListTmp
+
+	if _, ok := connInfo[cluster]; !ok {
+		panic(fmt.Sprintf("cluster %s is not exits", cluster))
+	}
+
+	fmt.Printf("||||\n%+v\n||||", connInfo[cluster])
+
+	poolVal, ok := connInfo[cluster].Load(keyList[randSigleton.Intn(len(keyList))])
+	if !ok {
+		panic("not exits")
+	}
+	db = poolVal.(*gorm.DB)
+	db.First(&user, 1)
+	// db.First(&user, "name = ?", "3307")
 	text, _ := json.Marshal(user)
 	w.Write(text)
 
 }
 
 func main() {
-
 	startHTTPServer()
-	//自动检查 User 结构是否变化，变化则进行迁移
-	// db.AutoMigrate(&User{})
-
-	// 增
-	// db.Create(&User{Code: "L1212", Price: 1000})
-
-	// 查
-	// var user User
-	// db.First(&user, 1) // 找到id为1的产品
-
-	// fmt.Printf("%+v", user)
-	// db.First(&User, "code = ?", "L1212") // 找出 code 为 l1212 的产品
-
-	// 改 - 更新产品的价格为 2000
-	// db.Model(&User).Update("Price", 2000)
-
-	// 删 - 删除产品
-	// db.Delete(&User)
 }
 
 func startHTTPServer() {
-	http.HandleFunc("/pool", pool)
+	http.HandleFunc("/pool", poolTest)
 	err := http.ListenAndServe(":9090", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
