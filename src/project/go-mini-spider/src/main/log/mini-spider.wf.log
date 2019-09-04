@@ -1,0 +1,53 @@
+[2015/06/22 10:39:41 CST] [EROR] (main.main:76) main():err in ConfigLoad(../../conf/mini_spider.conf):gcfg.ReadFileInto():../../conf/mini_spider.conf:2:3: illegal UTF-8 encoding (and 13 more errors)
+[2015/06/22 10:40:53 CST] [EROR] (main.main:76) main():err in ConfigLoad(../../conf/mini_spider.conf):gcfg.ReadFileInto():../../conf/mini_spider.conf:3:5: illegal character U+005F '_'
+[2015/06/22 10:41:04 CST] [EROR] (main.main:76) main():err in ConfigLoad(../../conf/mini_spider.conf):gcfg.ReadFileInto():../../conf/mini_spider.conf:3:5: illegal character U+005F '_'
+[2015/06/22 10:41:36 CST] [EROR] (main.main:76) main():err in ConfigLoad(../../conf/mini_spider.conf):gcfg.ReadFileInto():../../conf/mini_spider.conf:3:5: illegal character U+005F '_'
+[2015/06/22 10:42:06 CST] [EROR] (main.main:76) main():err in ConfigLoad(../../conf/mini_spider.conf):gcfg.ReadFileInto():../../conf/mini_spider.conf:3:5: illegal character U+005F '_'
+[2015/06/22 10:42:16 CST] [EROR] (main.main:76) main():err in ConfigLoad(../../conf/mini_spider.conf):gcfg.ReadFileInto():../../conf/mini_spider.conf:6:4: illegal character U+005F '_'
+[2015/06/22 10:42:27 CST] [EROR] (main.main:76) main():err in ConfigLoad(../../conf/mini_spider.conf):gcfg.ReadFileInto():../../conf/mini_spider.conf:3:5: illegal character U+005F '_'
+[2015/06/22 10:42:35 CST] [EROR] (main.main:76) main():err in ConfigLoad(../../conf/mini_spider.conf):gcfg.ReadFileInto():../../conf/mini_spider.conf:3:5: illegal character U+005F '_'
+[2015/06/22 10:42:52 CST] [EROR] (main.main:76) main():err in ConfigLoad(../../conf/mini_spider.conf):gcfg.ReadFileInto():../../conf/mini_spider.conf:3:5: illegal character U+005F '_'
+[2015/06/22 10:43:02 CST] [EROR] (main.main:76) main():err in ConfigLoad(../../conf/mini_spider.conf):gcfg.ReadFileInto():../../conf/mini_spider.conf:5:4: illegal character U+005F '_'
+[2015/06/22 10:43:33 CST] [EROR] (main.main:76) main():err in ConfigLoad(../../conf/mini_spider.conf):gcfg.ReadFileInto():../../conf/mini_spider.conf:3:5: illegal character U+005F '_'
+[2015/06/22 10:43:38 CST] [EROR] (main.main:76) main():err in ConfigLoad(../../conf/mini_spider.conf):gcfg.ReadFileInto():../../conf/mini_spider.conf:3:5: illegal character U+005F '_'
+[2015/06/22 10:47:50 CST] [EROR] (main.main:76) main():err in ConfigLoad(../../conf/mini_spider.conf):gcfg.ReadFileInto():invalid section: section "main"
+[2015/06/22 10:48:00 CST] [EROR] (main.main:76) main():err in ConfigLoad(../../conf/mini_spider.conf):gcfg.ReadFileInto():../../conf/mini_spider.conf:8:11: unquoted '\' must be followed by new line
+[2015/06/22 10:48:47 CST] [EROR] (main.main:76) main():err in ConfigLoad(../../conf/mini_spider.conf):gcfg.ReadFileInto():../../conf/mini_spider.conf:8:20: unknown escape sequence
+[2015/06/22 10:50:56 CST] [EROR] (main.main:84) main():err in SeedFileLoad(../../conf/seed_file.txt):json.Unmarshal():invalid character 'h' looking for beginning of value
+[2015/06/22 10:52:21 CST] [EROR] (main.main:84) main():err in SeedFileLoad(../../conf/seed_file.txt):json.Unmarshal():invalid character ']' looking for beginning of value
+[2015/06/22 10:56:16 CST] [EROR] (mini_spider.(*CrawlThread).Start:67) http_util.Read(/):http client.do():Get /: unsupported protocol scheme ""
+[2015/06/22 10:56:16 CST] [EROR] (mini_spider.(*CrawlThread).Start:67) http_util.Read(javascript:;):http client.do():Get javascript:;: unsupported protocol scheme "javascript"
+[2015/06/22 10:56:16 CST] [EROR] (mini_spider.(*CrawlThread).Start:67) http_util.Read(javascript:;):http client.do():Get javascript:;: unsupported protocol scheme "javascript"
+[2015/06/22 10:56:16 CST] [EROR] (mini_spider.(*CrawlThread).Start:67) http_util.Read(javascript:;):http client.do():Get javascript:;: unsupported protocol scheme "javascript"
+[2015/06/22 10:56:26 CST] [EROR] (mini_spider.(*CrawlThread).Start:67) http_util.Read(/):http client.do():Get /: unsupported protocol scheme ""
+[2015/06/22 10:56:26 CST] [EROR] (mini_spider.(*CrawlThread).Start:67) http_util.Read(javascript:;):http client.do():Get javascript:;: unsupported protocol scheme "javascript"
+[2015/06/22 11:21:59 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:21:59 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:21:59 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:21:59 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:22:09 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:22:09 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:22:09 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:31:02 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:31:02 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:31:02 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:31:02 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:31:12 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:31:12 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:31:12 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:32:03 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:45:24 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:45:24 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:45:24 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:45:24 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:45:34 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:45:34 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:45:34 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:46:24 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:46:24 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:46:24 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:46:24 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:46:34 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:46:34 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:46:34 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
+[2015/06/22 11:47:26 CST] [EROR] (mini_spider.(*CrawlThread).Start:68) http_util.Read(http:/www.baidu.com):http client.do():Get http:///www.baidu.com: http: no Host in request URL
