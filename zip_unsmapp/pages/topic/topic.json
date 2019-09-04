@@ -1,1 +1,0 @@
-{"navigationBarTitleText":"","usingComponents":{"wb-feed-list":"../../common/FeedList/FeedList","network-toast":"../../common/NetworkErrorToast/NetworkErrorToast","network-item":"../../common/NetworkErrorItem/NetworkErrorItem","to-home":"../../common/ToHomeButton/ToHomeButton"},"enablePullDownRefresh":false}

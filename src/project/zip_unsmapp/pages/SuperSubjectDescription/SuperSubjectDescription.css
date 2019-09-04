@@ -1,0 +1,31 @@
+.header,.description{
+  width: 93.6vw;
+  padding: 0 3.2vw;
+}
+.header{
+  margin-bottom: 7.466666666666667vw;
+  display: flex;
+  align-items: center;
+}
+.user-image{
+  width: 17.066666666666666vw;
+  height: 17.066666666666666vw;
+  border-radius: 8.533333333333333vw;
+  margin-right: 3.2vw;
+}
+.user-name{
+  font-family: PingFangSC-Medium;
+  font-size: 5.333333333333333vw;
+  color: #333333;
+}
+.description-title{
+  margin-bottom: 1.8666666666666667vw;
+  font-family: PingFangSC-Medium;
+  font-size: 4.266666666666667vw;
+  color: #333333;
+}
+.description-detail{
+  font-family: PingFangSC-Regular;
+  font-size: 3.7333333333333334vw;
+  color: #333333;
+}

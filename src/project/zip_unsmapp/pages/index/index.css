@@ -1,0 +1,241 @@
+swan-button::after {
+  border: none;
+}
+
+.main {
+  display: flex;
+}
+
+.error-page-box {
+  margin-top: 40vw;
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  margin-bottom: 13.333333333333334vw;
+  width: 100vw;
+}
+
+.content-box {
+  display: inline-block;
+  width: 100vw;
+  margin-top: 3.7333333333333334vw;
+}
+
+.main-content {
+  position: relative;
+  height: 240vw;
+  overflow-y: hidden;
+  margin-bottom: 3.2vw; 
+}
+
+.main-content-more {
+  position: relative;
+}
+
+.user-title {
+  padding: 0 3.2vw;
+}
+
+.blog-title {
+  margin: 3.7333333333333334vw 0 2.1333333333333333vw 0;
+}
+
+.wb-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.wb-main swan-a {
+  color: #507daf;
+}
+
+.wb-content {
+  margin: 2.1333333333333333vw 0 3.2vw 0;
+  padding-left: 3.2vw;
+  padding-right: 3.2vw;
+}
+
+.wb-media {
+  margin-bottom: 3.2vw;
+}
+
+.wb-main-retweet {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 3.6vw;
+}
+
+.retweet-content {
+  background: #f7f7f7;
+  border-radius: 6px;
+  padding: 2.933333333333333vw 0 3.2vw 0;
+}
+
+.show-more-shadow {
+  background: linear-gradient(-180deg, rgba(255, 255, 255, 0.00) 0%, #fff 80%);
+  width: 100%;
+  height: 24vw;
+  z-index: 100;
+  position: absolute;
+  top: 221.33333333333334vw;
+}
+
+.show-more-no {
+  display: none;
+}
+
+.down-img {
+  width: 3.7333333333333334vw;
+  height: 3.7333333333333334vw;
+  margin-right: 2.1333333333333333vw;
+  z-index: 10000;
+}
+
+.show-more {
+  background: #fff;
+  width: 100%;
+  height: 10.666666666666666vw;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2.6666666666666665vw;
+}
+
+.remark-panel-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.remark-panel {
+  display: flex;
+  font-family: PingFangSC-Regular;
+  font-size: 3.7333333333333334vw;
+  color: #636363;
+  padding: 2.933333333333333vw 3.2vw 2.933333333333333vw 0;
+  align-items: center;
+}
+
+.remark-panel swan-text {
+  font-family: PingFangSC-Regular;
+  font-size: 3.7333333333333334vw;
+  color: #636363;
+  line-height: 3.7333333333333334vw;
+}
+
+.left-view {
+  background-color: #1b9af4;
+  height: 5.866666666666666vw;
+  width: 0.8vw;
+  border-radius: 0 13.333333333333334vw 13.333333333333334vw 0;
+  margin-right: 2.4vw;
+}
+
+.load-more {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1.3333333333333333vw;
+}
+
+.load-more swan-text {
+  font-size: 3.7333333333333334vw;
+}
+
+.text-like-button {
+  background-color: #fff;
+  font-family: PingFangSC-Regular;
+  font-size: 3.7333333333333334vw;
+  color: #636363;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 3.466666666666667vw;
+}
+
+.line {
+  display: flex;
+  width: 100%;
+  height: 0.13333333333333333vw;
+  background-color: #e6e6e6;
+  margin-bottom: 3.7333333333333334vw;
+}
+
+.more-comment-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.show-more-comment {
+  font-family: PingFangSC-Regular;
+  font-size: 3.7333333333333334vw;
+  color: #1b9af4;
+  line-height: 3.7333333333333334vw;
+}
+
+.more-comment {
+  margin: 0 3.466666666666667vw 3.466666666666667vw 3.466666666666667vw;
+  width: 100%;
+  height: 11.2vw;
+  background: #1b9af4;
+  font-family: PingFangSC-Regular;
+  font-size: 4.533333333333333vw;
+  color: #fff;
+  text-align: center;
+}
+
+.water-pull-flow {
+  display: inline-block;
+  width: 100vw;
+}
+
+.long_task_mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 266.6666666666667vw;
+  background: #333;
+  opacity: 0.15;
+  z-index: 1000;
+}
+
+.footer-box {
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  background-color: #fff;
+  height: 13.333333333333334vw;
+  width: 100vw;
+  display: flex;
+  align-items: center;  
+}
+
+.float-home, .float-home-low {
+  width: 13.333333333333334vw;
+  height: 13.333333333333334vw;
+}
+
+.float-home {
+  position: fixed;
+  bottom: 45.86666666666667vw;
+  right: 5.333333333333333vw;
+  z-index: 10000;
+}
+
+.float-home-low {
+  position: fixed;
+  bottom: 26.133333333333333vw;
+  right: 5.333333333333333vw;
+  z-index: 10000;
+}
+
+.place-holder {
+  height: 17.066666666666666vw;
+}

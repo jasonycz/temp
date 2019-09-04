@@ -1,0 +1,136 @@
+.search{
+  position: fixed;
+  left: 0;
+  top:0;
+  width: 100vw;
+  height: 11.733333333333333vw;
+  background-color: #FFFFFF;
+  align-items: center;
+  box-shadow: 0 1px 3px 0 rgba(215,215,215,0.20), 0 5px 5px 0 rgba(215,215,215,0.18);
+  z-index: 1005;
+}
+.place-holder{
+  height: 11.733333333333333vw;
+}
+.title{
+  padding-left: 3.2vw;
+  font-family: PingFangSC-Regular;
+  font-size: 4.266666666666667vw;
+  color: #333333;
+}
+.content{
+  padding:0 3.2vw;
+  overflow: hidden;
+}
+.title,.content{
+  width: 100vw;
+  height: 13.333333333333334vw;
+  display: flex;
+  border-bottom: 0.13333333333333333vw solid #E6E6E6;
+  align-items: center;
+  font-size: 4.266666666666667vw;
+}
+.hot-icon{
+  width: 4vw;
+  height: 4vw;
+  margin:0 4.533333333333333vw 0 1.2vw;
+}
+.hot-content{
+  font-family: PingFangSC-Regular;
+  font-size: 4.266666666666667vw;
+  color: #333333;
+  width: 70%;
+  overflow: hidden;
+}
+.hot-number{
+  width: 12%;
+  overflow: visible;
+  font-family: PingFangSC-Regular;
+  font-size: 3.2vw;
+  color: #999999;
+  text-align: right;
+}
+.user-content{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 28.4vw;
+  overflow: hidden;
+  white-space: nowrap;
+  border-bottom: 0.13333333333333333vw solid #E6E6E6;
+}
+.user-box{ 
+  display: inline-block;
+}
+.user-piece{
+  display: flex;
+  flex-direction: column; 
+  margin: 3.2vw 2.1333333333333333vw 3.2vw 0; 
+}
+.user-box:first-child{
+  margin-left: 3.2vw; 
+}
+.user-box:last-child{
+  margin-right: 3.2vw; 
+  filter: alpha(opacity=70);
+}
+.image-box{
+  position: relative;
+  width: 15.733333333333333vw;
+  height: 15.733333333333333vw;
+  border-radius: 7.866666666666666vw;
+  margin-bottom: 1.8666666666666667vw;
+  overflow: hidden;
+}
+.user-image{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+.gray{
+  background: rgba(0,0,0,0.50);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  top: 0;
+  right: 0;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.right-arrow{
+  width: 4.8vw;
+  height: 4.8vw;
+  opacity: 1;
+  border:none;
+}
+.user-box swan-text{
+  font-family: PingFangSC-Regular;
+  font-size: 3.2vw;
+  color: #999999;
+  text-align: center;
+  width: 16.666666666666668vw;
+  height: 4.4vw;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.no-content{
+  margin-top: 57.46666666666667vw;
+  margin-bottom: 86.26666666666667vw;
+  width: 100vw;
+  font-family: PingFangSC-Regular;
+  font-size: 4.8vw;
+  color: #999999;
+  text-align: center;
+}
+.error-page-box {
+  margin-top: 40vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 13.333333333333334vw;
+}
